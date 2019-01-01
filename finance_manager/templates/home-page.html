@@ -1,1 +1,46 @@
-test home page
+{% extends 'base.html' %}
+{% block body %}
+    <select name="categories">
+        <option>All</option>
+        {% for category in  categories %}
+            <option value="{{ category.category_name }}"
+                    {% if  category.id == category_id %}
+                    selected="selected"{% endif %}>{{ category.category_name }}</option>
+        {% endfor %}
+    </select>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th>#</th>
+                <th>Category</th>
+                <th>Type of operation</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="myTable">
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.id }}</td>
+                    <td>{{ transaction.category.category_name }}</td>
+                    <td>{{ transaction.type_of_operation }}</td>
+                    <td>{{ transaction.amount }}</td>
+                    <td>{{ transaction.operation_date }}</td>
+                    <td>{{ transaction.transaction_description }}</td>
+                    <td>Place holder: here will be some actions</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('select[name="categories"]').change(function () {
+                window.location.href = window.location.pathname + '?category=' + $(this).val();
+            });
+        });
+    </script>
+{% endblock %}
