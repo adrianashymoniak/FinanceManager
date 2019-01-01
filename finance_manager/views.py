@@ -65,7 +65,7 @@ def add_category(request):
             category = form.save(commit=False)
             category.user = request.user
             category.save()
-            return redirect('categories-page', pk=category.pk)
+            return redirect('categories-page')
         else:
             category = Category()
             category.category_name = request.POST['category_name']
@@ -83,21 +83,27 @@ def add_category(request):
         return render(request, 'add-category-page.html', context)
 
 
+@login_required
 def edit_category(request, pk):
-    category = get_object_or_404(Category, pk=pk)
-    if request.method == 'POSt':
+    queryset = Category.objects.filter(user=request.user)
+    category = get_object_or_404(queryset, pk=pk)
+
+    if request.method == 'POST':
         form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
             category = form.save(commit=False)
-            category.user = request.user
             category.save()
-            return redirect('categories-page', pk=category.pk)
+            return redirect('categories-page')
         else:
-            category = Category()
-            category.category_name = request.POST['category_name']
-            category.category_description = request.POST['category_description']
+            category.category_name = form.category_name
+            category.category_description = form.category_description
             context = {
                 'form': form,
                 'category': category,
             }
             return render(request, 'edit-category-page.html', context)
+    else:
+        context = {
+            'category': category,
+        }
+        return render(request, 'edit-category-page.html', context)

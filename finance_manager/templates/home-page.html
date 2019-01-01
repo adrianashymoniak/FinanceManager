@@ -1,13 +1,19 @@
 {% extends 'base.html' %}
 {% block body %}
-    <select name="categories">
-        <option>All</option>
-        {% for category in  categories %}
-            <option value="{{ category.category_name }}"
-                    {% if  category.id == category_id %}
-                    selected="selected"{% endif %}>{{ category.category_name }}</option>
-        {% endfor %}
-    </select>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">Options</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01" name="categories">
+            <option>All categories</option>
+            {% for category in  categories %}
+                <option value="{{ category.category_name }}"
+                        {% if  category.id == category_id %}
+                        selected="selected"{% endif %}>{{ category.category_name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="thead-dark">
