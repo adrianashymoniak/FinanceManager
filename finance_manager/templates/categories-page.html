@@ -17,14 +17,28 @@
                     <td>{{ category.id }}</td>
                     <td>{{ category.category_name }}</td>
                     <td>{{ category.category_description }}</td>
-                    <td>Place holder: here will be some actions</td>
+                    <td>
+                        <a id="edit-category" class="btn btn-info" href="{% url 'edit-category-page' pk=category.id %}">Edit
+                            category</a>
+                        <a id="delete-category" class="btn btn-danger"
+                           href="{% url 'delete-category' pk=category.id %}">Delete
+                            category</a>
+                    </td>
                 </tr>
             {% endfor %}
+
             </tbody>
         </table>
     </div>
+
     <script>
         $(document).ready(function () {
+            {% if messages %}
+                {% for message in messages %}
+                    alert("{{ message }}")
+                {% endfor %}
+            {% endif %}
+
             $("#search-id").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
                 $("#table-id tr").filter(function () {

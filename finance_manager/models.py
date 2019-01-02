@@ -16,4 +16,4 @@ class Transaction(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     operation_date = models.DateField(default=datetime.date.today, blank=True)
     transaction_description = models.CharField(max_length=250)
-    category = models.ForeignKey(Category, on_delete=models.SET(None))
+    category = models.ForeignKey(Category, on_delete=models.PROTECT)

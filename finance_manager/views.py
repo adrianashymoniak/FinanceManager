@@ -1,5 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.db.models.deletion import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
 
 from finance_manager.forms import SignUpForm, CategoryForm
@@ -47,7 +49,7 @@ def home(request):
     return render(request, 'home-page.html', context)
 
 
-@login_required(login_url='login/')
+@login_required
 def categories_page(request):
     user = request.user
     categories = Category.objects.filter(user=user)
@@ -57,7 +59,7 @@ def categories_page(request):
     return render(request, 'categories-page.html', context)
 
 
-@login_required(login_url='login/')
+@login_required
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -107,3 +109,17 @@ def edit_category(request, pk):
             'category': category,
         }
         return render(request, 'edit-category-page.html', context)
+
+
+@login_required
+def delete_category(request, pk):
+    categories = Category.objects.filter(user=request.user)
+    category = get_object_or_404(categories, pk=pk)
+
+    try:
+        category.delete()
+    except ProtectedError:
+        error_message = "You cannot delete [" + str(category.category_name) + "] category. " \
+                                                                              "Please, first delete all transactions related to this category and then delete category."
+        messages.error(request, error_message)
+    return redirect('categories-page')
