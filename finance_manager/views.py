@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.db.models.deletion import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
 
-from finance_manager.forms import SignUpForm, CategoryForm
-from finance_manager.models import Transaction, Category
+from finance_manager.forms import SignUpForm, CategoryForm, TransactionForm
+from finance_manager.models import Transaction, Category, EXPENSE_CHOICES
 
 
 def signup(request):
@@ -123,3 +123,95 @@ def delete_category(request, pk):
                                                                               "Please, first delete all transactions related to this category and then delete category."
         messages.error(request, error_message)
     return redirect('categories-page')
+
+
+@login_required
+def add_transaction(request):
+    if request.method == 'POST':
+        form = TransactionForm(request.POST)
+        if form.is_valid():
+            transaction = form.save(commit=False)
+            transaction.user = request.user
+            transaction.save()
+            return redirect('home')
+        else:
+            transaction = Transaction()
+            transaction.category = request.POST.get('category_name')
+            transaction.type_of_operation = request.POST.get('type_of_operation')
+            transaction.amount = form.amount
+            transaction.transaction_description = form.transaction_description
+
+            context = {
+                'form': form,
+                'transaction': transaction,
+            }
+            return render(request, 'add-transaction-page.html', context)
+    else:
+        form = TransactionForm()
+        categories = Category.objects.filter(user=request.user)
+        context = {
+            'form': form,
+            'categories': categories,
+            'expense_choices': EXPENSE_CHOICES,
+        }
+    return render(request, 'add-transaction-page.html', context)
+
+
+@login_required
+def edit_transaction(request, pk):
+    queryset = Transaction.objects.filter(user=request.user)
+    transaction = get_object_or_404(queryset, pk=pk)
+
+    if request.method == 'POST':
+        form = TransactionForm(request.POST, instance=transaction)
+        if form.is_valid():
+            transaction = form.save(commit=False)
+            transaction.save()
+            return redirect('home')
+        else:
+            transaction.category = form.category
+            transaction.type_of_operation = form.type_of_operation
+            transaction.amount = form.amount
+            transaction.transaction_description = form.transaction_description
+
+            context = {
+                'form': form,
+                'transaction': transaction,
+            }
+            return render(request, 'edit-transaction-page.html', context)
+    else:
+        context = {
+            'transaction': transaction,
+        }
+        return render(request, 'edit-transaction-page.html', context)
+
+
+@login_required
+def delete_transaction(request, pk):
+    transactions = Transaction.objects.filter(user=request.user)
+    get_object_or_404(transactions, pk=pk).delete()
+    return redirect('categories-page')
+
+
+@login_required
+def delete_all_transactions(request):
+    Transaction.objects.filter(user=request.user).delete()
+    return redirect('home')
+
+
+@login_required
+def delete_all_transaction_of_one_category(request, pk):
+    category_id = get_object_or_404(Category.objects.filter(user=request.user), pk=pk)
+    Transaction.objects.filter(user=request.user).filter(category=category_id).delete()
+    return redirect('categories-page')
+
+
+@login_required
+def category_details(request, pk):
+    category = get_object_or_404(Category.objects.filter(user=request.user), pk=pk)
+    transaction = Transaction.objects.filter(user=request.user).filter(category=category.id)
+    context = {
+        'category': category,
+        'transaction': transaction,
+    }
+    return render(request, 'category-details-page.html', context)

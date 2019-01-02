@@ -12,5 +12,10 @@ urlpatterns = [
     url(r'^add-category/$', views.add_category, name='add-category-page'),
     url(r'^categories/(?P<pk>\d+)/edit-category/$', views.edit_category, name='edit-category-page'),
     url(r'^categories/(?P<pk>\d+)/delete-category/$', views.delete_category, name='delete-category'),
+    url(r'^categories/(?P<pk>\d+)/category-details/$', views.category_details, name='category-details'),
+    url(r'^add-transaction/$', views.add_transaction, name='add-transaction-page'),
+    url(r'^(?P<pk>\d+)/edit-transaction/$', views.edit_transaction, name='edit-transaction-page'),
+    url(r'^(?P<pk>\d+)/delete-transaction/$', views.delete_transaction, name='delete-transaction'),
+    url(r'^delete-all-transactions/$', views.delete_all_transactions, name='delete-all-transactions'),
 
 ]

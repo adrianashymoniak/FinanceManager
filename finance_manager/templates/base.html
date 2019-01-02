@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}"/>
@@ -16,9 +17,83 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-    <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+<header>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a id="home-page" class="navbar-brand" href="{% url 'home' %}">Finance Manager</a>
+            </div>
+            {% if user.is_authenticated %}
+
+
+
+
+{#                <ul class="nav navbar-nav">#}
+{#                    <li class="nav-item dropdown">#}
+{#                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"#}
+{#                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#                            Dropdown#}
+{#                        </a>#}
+{#                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">#}
+{#                            <a class="dropdown-item" href="#">Action</a>#}
+{#                            <a class="dropdown-item" href="#">Another action</a>#}
+{#                            <div class="dropdown-divider"></div>#}
+{#                            <a class="dropdown-item" href="#">Something else here</a>#}
+{#                        </div>#}
+{#                    </li>#}
+{#                    <li>#}
+{#                        <div class="dropdown">#}
+{#                            <button id="categories-menu-id" class="dropbtn">Categories menu<span#}
+{#                                    class="arrow">&#9660;</span></button>#}
+{#                            <div class="dropdown-content">#}
+{#                                <a id="categories-page-id" href="{% url 'categories-page' %}">All categories</a>#}
+{#                                <a id="add-category-id" href="{% url 'add-category-page' %}">Add category</a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </li>#}
+{##}
+{#                    {% url 'task_detail' pk=task.pk as task_detail_url %}#}
+{#                    {% url 'edit_task' pk=task.pk as edit_task_url %}#}
+{#                    {% if request.get_full_path == task_detail_url or request.get_full_path == edit_task_url %}#}
+{#                        <li><a id="delete-task-edit-page" href="{% url 'delete' pk=task.pk %}" class="task-delete"#}
+{#                               onclick="return getTaskDeleted()">Delete task</a>#}
+{#                        </li>#}
+{#                        {% if  request.get_full_path == task_detail_url %}#}
+{#                            <li><a id="edit-task-task-detail" href="{% url 'edit_task' pk=task.pk %}">Edit task</a></li>#}
+{#                        {% elif request.get_full_path == edit_task_url %}#}
+{#                            <li><a id="go-detail-page" href="{% url 'task_detail' pk=task.pk %}">Task Detail</a></li>#}
+{#                        {% endif %}#}
+{#                    {% endif %}#}
+{#                    {% url 'view_profile' as view_profile_url %}#}
+{#                    {% if request.get_full_path == view_profile_url %}#}
+{#                        <li><a id="delete-user" href="{% url 'delete_account' %}"#}
+{#                               onclick="return getAccountDeleted()">Delete#}
+{#                            account</a>#}
+{#                        </li>#}
+{#                    {% endif %}#}
+{#                </ul>#}
+{#                <ul class="nav navbar-nav navbar-right">#}
+{#                    <li>#}
+{##}
+{#                    </li>#}
+{#                    <li><a id="logout" href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span>#}
+{#                        Logout</a></li>#}
+{#                </ul>#}
+            {% else %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a id="login" href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span>
+                        Login</a>
+                    </li>
+                    <li><a id="signup" href="{% url 'signup' %}"><span class="glyphicon glyphicon-user"></span>
+                        Signup</a>
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+    </nav>
+</header>
 {% block body %}
 {% endblock %}
 </body>

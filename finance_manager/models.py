@@ -2,6 +2,9 @@ import datetime
 
 from django.db import models
 
+EXPENSE_CHOICES = (
+    ('Revenue', 'revenue'), ('Expenses', 'expenses'))
+
 
 class Category(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, default=None)
@@ -11,8 +14,7 @@ class Category(models.Model):
 
 class Transaction(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, default=None)
-    type_of_operation = models.CharField(max_length=8, choices=(
-        ('Revenue', 'revenue'), ('Expenses', 'expenses')))
+    type_of_operation = models.CharField(max_length=8, choices=EXPENSE_CHOICES)
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     operation_date = models.DateField(default=datetime.date.today, blank=True)
     transaction_description = models.CharField(max_length=250)
