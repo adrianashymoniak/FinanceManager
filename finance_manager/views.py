@@ -70,8 +70,8 @@ def add_category(request):
             return redirect('categories-page')
         else:
             category = Category()
-            category.category_name = request.POST['category_name']
-            category.category_description = request.POST['category_description']
+            category.category_name = form.category_name
+            category.category_description = form.category_description
             context = {
                 'form': form,
                 'category': category,
@@ -180,8 +180,12 @@ def edit_transaction(request, pk):
             }
             return render(request, 'edit-transaction-page.html', context)
     else:
+
+        categories = Category.objects.filter(user=request.user)
         context = {
             'transaction': transaction,
+            'categories': categories,
+            'expense_choices': EXPENSE_CHOICES,
         }
         return render(request, 'edit-transaction-page.html', context)
 
