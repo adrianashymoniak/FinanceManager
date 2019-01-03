@@ -17,5 +17,7 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/edit-transaction/$', views.edit_transaction, name='edit-transaction-page'),
     url(r'^(?P<pk>\d+)/delete-transaction/$', views.delete_transaction, name='delete-transaction'),
     url(r'^delete-all-transactions/$', views.delete_all_transactions, name='delete-all-transactions'),
+    url(r'^(?P<pk>\d+)/delete-all-transaction-of-one-category/$', views.delete_all_transaction_of_one_category,
+        name='delete-all-transaction-of-one-category'),
 
 ]

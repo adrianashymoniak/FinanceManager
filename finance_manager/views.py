@@ -209,9 +209,9 @@ def delete_all_transaction_of_one_category(request, pk):
 @login_required
 def category_details(request, pk):
     category = get_object_or_404(Category.objects.filter(user=request.user), pk=pk)
-    transaction = Transaction.objects.filter(user=request.user).filter(category=category.id)
+    transactions = Transaction.objects.filter(user=request.user).filter(category=category.id)
     context = {
         'category': category,
-        'transaction': transaction,
+        'transactions': transactions,
     }
     return render(request, 'category-details-page.html', context)
