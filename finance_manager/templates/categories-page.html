@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
-{% block body %}
+{% block title %}
+    Categories page
+{% endblock %}
+{% block authorized_user_content %}
+    {{ value|linebreaks }}
     <input class="form-control mr-sm-2" id="search-id" type="text" placeholder="Search..">
+    {{ value|linebreaks }}
     <div class="table-responsive">
         <table class="table table-bordered">
-            <thead class="thead-dark">
+            <thead>
             <tr>
                 <th>#</th>
                 <th>Name</th>

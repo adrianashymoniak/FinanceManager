@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% if user.is_authenticated %}
+    {% block authorized_user_content %}
+        <p>You are already logged in. Please go to <a href="{% url 'home' %}">Home Page!</a></p>
+    {% endblock %}
+{% else %}
+    {% block title %} Login {% endblock %}
+    {% block anonymous_user_content %}
+        <div class="alignment">
+            <h2 class="form-title">Login</h2>
+            <form method='post' autocomplete="off">
+                {% csrf_token %}
+                <div class="username">
+                    <input autocomplete="off" class="form-control" type="text" name="username" autofocus=""
+                           maxlength="254"
+                           id="id-username"
+                           placeholder="Username" required="">
+                </div>
+                <div class="password">
+                    <input autocomplete="off" class="form-control" type="password" name="password" id="id-password"
+                           placeholder="Password" required="">
+                </div>
+                <button id="login-btn" type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    {% endblock %}
+{% endif %}

@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
-{% block body %}
+{% block title %}
+    Add new transaction
+{% endblock %}
+{% block authorized_user_content %}
     <form method="post">
         {% csrf_token %}
         <div class="form-group">

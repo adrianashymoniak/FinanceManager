@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
-{% block body %}
+{% block title %}
+    Finance Manager
+{% endblock %}
+{% block authorized_user_content %}
+    {{ value|linebreaks }}
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <label class="input-group-text" for="inputGroupSelect01">Options</label>
@@ -13,10 +17,10 @@
             {% endfor %}
         </select>
     </div>
-
+    {{ value|linebreaks }}
     <div class="table-responsive">
         <table class="table table-bordered">
-            <thead class="thead-dark">
+            <thead>
             <tr>
                 <th>#</th>
                 <th>Category</th>
@@ -36,7 +40,14 @@
                     <td>{{ transaction.amount }}</td>
                     <td>{{ transaction.operation_date }}</td>
                     <td>{{ transaction.transaction_description }}</td>
-                    <td>Place holder: here will be some actions</td>
+                    <td>
+                        <a id="edit-transaction" class="btn btn-info"
+                           href="{% url 'edit-transaction-page' pk=transaction.id %}">Edit
+                            transaction</a>
+                        <a id="delete-transaction" class="btn btn-danger"
+                           href="{% url 'delete-transaction' pk=transaction.pk %}">Delete
+                            transaction</a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
