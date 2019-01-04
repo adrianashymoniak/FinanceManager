@@ -175,7 +175,6 @@ def edit_transaction(request, pk):
             transaction.transaction_description = form.transaction_description
 
             context = {
-                'form': form,
                 'transaction': transaction,
             }
             return render(request, 'edit-transaction-page.html', context)
