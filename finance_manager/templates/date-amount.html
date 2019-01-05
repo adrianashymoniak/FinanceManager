@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block authorized_user_content %}
+    {{ transactions }}
+    <div id="container"></div>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script>
+        Highcharts.chart('container', {
+
+            title: {
+                text: 'Amount of expenses/revenue by the date'
+            },
+
+            yAxis: {
+                title: {
+                    text: 'Expenses/Revenue'
+                }
+            },
+            xAxis: {
+                title: {
+                    text: 'Operation date'
+                },
+                type: 'datetime',
+                tickInterval: 24 * 3600 * 1000 * 7, {#    days * seconds in hour * miliseconds * week#}
+            },
+
+            series: [{
+                name: 'Amount by dates',
+                data: [
+                    {% for transaction in transactions %}
+                        [Date.parse('{{ transaction.operation_date }}'), {{ transaction.amount }}],
+                    {% endfor %}
+                ]
+            }],
+
+            responsive: {
+                rules: [{
+                    condition: {
+                        maxWidth: 500
+                    },
+                    chartOptions: {
+                        legend: {
+                            layout: 'horizontal',
+                            align: 'center',
+                            verticalAlign: 'bottom'
+                        }
+                    }
+                }]
+            }
+
+        });
+    </script>
+
+{% endblock %}

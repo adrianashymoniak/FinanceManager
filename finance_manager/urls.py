@@ -19,5 +19,8 @@ urlpatterns = [
     url(r'^delete-all-transactions/$', views.delete_all_transactions, name='delete-all-transactions'),
     url(r'^(?P<pk>\d+)/delete-all-transaction-of-one-category/$', views.delete_all_transaction_of_one_category,
         name='delete-all-transaction-of-one-category'),
+    url(r'^categories-amount/$', views.amount_by_categories, name='categories-amount'),
+    url(r'^date-amount/$', views.amount_by_date, name='date-amount'),
+    url(r'^report-generator/$', views.report_generator, name='report-generator'),
 
 ]

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block authorized_user_content %}
+    <div id="container"></div>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script>
+        Highcharts.chart('container', {
+            chart: {
+                type: 'pie'
+            },
+            title: {
+                text: 'Categories amount'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'Category',
+                colorByPoint: true,
+                data: [
+                    {% for category in categories_amount %}
+                        {
+                            name: '{{ category.category__category_name }}',
+                            y: {{ category.category_total }}
+                        },
+                    {% endfor %}
+                ]
+            }]
+        });
+    </script>
+{% endblock %}

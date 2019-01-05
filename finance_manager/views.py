@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.db.models import Sum
 from django.db.models.deletion import ProtectedError
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -229,3 +230,52 @@ def category_details(request, pk):
         'transactions': transactions,
     }
     return render(request, 'category-details-page.html', context)
+
+
+@login_required(login_url='/')
+def amount_by_categories(request):
+    type_of_operation = request.POST.get('type_of_operation')
+    date_from = request.POST.get('from')
+    date_to = request.POST.get('to')
+    categories_amount = Transaction.objects \
+        .filter(user=request.user) \
+        .filter(type_of_operation=type_of_operation) \
+        .filter(operation_date__range=[date_from, date_to]) \
+        .values('category__category_name') \
+        .annotate(category_total=Sum('amount'))
+    context = {
+        'categories_amount': categories_amount,
+    }
+    return render(request, 'category-total.html', context)
+
+
+@login_required(login_url='/')
+def amount_by_date(request):
+    type_of_operation = request.POST.get('type_of_operation')
+    date_from = request.POST.get('from')
+    date_to = request.POST.get('to')
+    transactions = Transaction.objects \
+        .filter(user=request.user) \
+        .filter(type_of_operation=type_of_operation) \
+        .filter(operation_date__range=[date_from, date_to]) \
+        .order_by('operation_date')
+
+    context = {
+        'transactions': transactions,
+    }
+    return render(request, 'date-amount.html', context)
+
+
+@login_required(login_url='/')
+def report_generator(request):
+    if request.method == 'POST':
+        chart = request.POST.get('chart')
+        if chart == 'category-pie':
+            return amount_by_categories(request)
+        else:
+            return amount_by_date(request)
+    else:
+        context = {
+            'expense_choices': EXPENSE_CHOICES,
+        }
+        return render(request, 'report-generator.html', context)
