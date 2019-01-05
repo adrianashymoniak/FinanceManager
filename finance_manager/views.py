@@ -49,7 +49,7 @@ def home(request):
     return render(request, 'home-page.html', context)
 
 
-@login_required
+@login_required(login_url='/')
 def categories_page(request):
     user = request.user
     categories = Category.objects.filter(user=user)
@@ -59,7 +59,7 @@ def categories_page(request):
     return render(request, 'categories-page.html', context)
 
 
-@login_required
+@login_required(login_url='/')
 def add_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -70,8 +70,8 @@ def add_category(request):
             return redirect('categories-page')
         else:
             category = Category()
-            category.category_name = form.category_name
-            category.category_description = form.category_description
+            category.category_name = request.POST.get('category_name')
+            category.category_description = request.POST.get('category_description')
             context = {
                 'form': form,
                 'category': category,
@@ -85,10 +85,14 @@ def add_category(request):
         return render(request, 'add-category-page.html', context)
 
 
-@login_required
+def get_user_object_or_404(model_class, request, pk):
+    queryset = model_class.objects.filter(user=request.user)
+    return get_object_or_404(queryset, pk=pk)
+
+
+@login_required(login_url='/')
 def edit_category(request, pk):
-    queryset = Category.objects.filter(user=request.user)
-    category = get_object_or_404(queryset, pk=pk)
+    category = get_user_object_or_404(Category, request, pk)
 
     if request.method == 'POST':
         form = CategoryForm(request.POST, instance=category)
@@ -97,8 +101,8 @@ def edit_category(request, pk):
             category.save()
             return redirect('categories-page')
         else:
-            category.category_name = form.category_name
-            category.category_description = form.category_description
+            category.category_name = request.POST.get('category_name')
+            category.category_description = request.POST.get('category_description')
             context = {
                 'form': form,
                 'category': category,
@@ -111,10 +115,9 @@ def edit_category(request, pk):
         return render(request, 'edit-category-page.html', context)
 
 
-@login_required
+@login_required(login_url='/')
 def delete_category(request, pk):
-    categories = Category.objects.filter(user=request.user)
-    category = get_object_or_404(categories, pk=pk)
+    category = get_user_object_or_404(Category, request, pk)
 
     try:
         category.delete()
@@ -125,7 +128,7 @@ def delete_category(request, pk):
     return redirect('categories-page')
 
 
-@login_required
+@login_required(login_url='/')
 def add_transaction(request):
     if request.method == 'POST':
         form = TransactionForm(request.POST)
@@ -138,12 +141,15 @@ def add_transaction(request):
             transaction = Transaction()
             transaction.category = request.POST.get('category_name')
             transaction.type_of_operation = request.POST.get('type_of_operation')
-            transaction.amount = form.amount
-            transaction.transaction_description = form.transaction_description
+            transaction.amount = request.POST.get('amount')
+            transaction.transaction_description = request.POST.get('transaction_description')
 
+            categories = Category.objects.filter(user=request.user)
             context = {
                 'form': form,
                 'transaction': transaction,
+                'categories': categories,
+                'expense_choices': EXPENSE_CHOICES,
             }
             return render(request, 'add-transaction-page.html', context)
     else:
@@ -157,10 +163,9 @@ def add_transaction(request):
     return render(request, 'add-transaction-page.html', context)
 
 
-@login_required
+@login_required(login_url='/')
 def edit_transaction(request, pk):
-    queryset = Transaction.objects.filter(user=request.user)
-    transaction = get_object_or_404(queryset, pk=pk)
+    transaction = get_user_object_or_404(Transaction, request, pk)
 
     if request.method == 'POST':
         form = TransactionForm(request.POST, instance=transaction)
@@ -169,13 +174,17 @@ def edit_transaction(request, pk):
             transaction.save()
             return redirect('home')
         else:
-            transaction.category = form.category
-            transaction.type_of_operation = form.type_of_operation
-            transaction.amount = form.amount
-            transaction.transaction_description = form.transaction_description
+            transaction.category = request.POST.get('category_name')
+            transaction.type_of_operation = request.POST.get('type_of_operation')
+            transaction.amount = request.POST.get('amount')
+            transaction.transaction_description = request.POST.get('transaction_description')
 
+            categories = Category.objects.filter(user=request.user)
             context = {
+                'form': form,
                 'transaction': transaction,
+                'categories': categories,
+                'expense_choices': EXPENSE_CHOICES,
             }
             return render(request, 'edit-transaction-page.html', context)
     else:
@@ -189,29 +198,31 @@ def edit_transaction(request, pk):
         return render(request, 'edit-transaction-page.html', context)
 
 
-@login_required
+@login_required(login_url='/')
 def delete_transaction(request, pk):
-    transactions = Transaction.objects.filter(user=request.user)
-    get_object_or_404(transactions, pk=pk).delete()
-    return redirect('categories-page')
+    get_user_object_or_404(Transaction, request, pk).delete()
+    if request.get_full_path() == r'^categories/(?P<pk>\d+)/category-details/$':
+        return redirect('categories-page')
+    else:
+        return redirect('home')
 
 
-@login_required
+@login_required(login_url='/')
 def delete_all_transactions(request):
     Transaction.objects.filter(user=request.user).delete()
     return redirect('home')
 
 
-@login_required
+@login_required(login_url='/')
 def delete_all_transaction_of_one_category(request, pk):
-    category_id = get_object_or_404(Category.objects.filter(user=request.user), pk=pk)
-    Transaction.objects.filter(user=request.user).filter(category=category_id).delete()
+    get_user_object_or_404(Category, request, pk)
+    Transaction.objects.filter(user=request.user).filter(category=pk).delete()
     return redirect('categories-page')
 
 
-@login_required
+@login_required(login_url='/')
 def category_details(request, pk):
-    category = get_object_or_404(Category.objects.filter(user=request.user), pk=pk)
+    category = get_user_object_or_404(Category, request, pk)
     transactions = Transaction.objects.filter(user=request.user).filter(category=category.id)
     context = {
         'category': category,
