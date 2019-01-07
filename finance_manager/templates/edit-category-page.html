@@ -5,22 +5,26 @@
 {% block authorized_user_content %}
     <form method="post">
         {% csrf_token %}
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
+        <div class="alignment">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default"
+                       aria-describedby="inputGroup-sizing-default"
+                       name="category_name" value="{{ category.category_name }}" required>
             </div>
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
-                   name="category_name" value="{{ category.category_name }}">
-        </div>
-        <div class="input-group mb-3">
-            <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">Description</span>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Description</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Default"
+                       aria-describedby="inputGroup-sizing-default"
+                       name="category_description"
+                       value="{{ category.category_description }}">
             </div>
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default"
-                   name="category_description"
-                   value="{{ category.category_description }}">
+            <button type="submit" class="btn btn-dark">Submit</button>
+            <button type="reset" class="btn btn-warning">Reset</button>
         </div>
-        <button type="submit" class="btn btn-dark">Submit</button>
-        <button type="reset" class="btn btn-warning">Reset</button>
     </form>
 {% endblock %}

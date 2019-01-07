@@ -5,34 +5,38 @@
 {% block authorized_user_content %}
     <form method="post">
         {% csrf_token %}
-        <div class="form-group">
-            <select class="custom-select" id="categories-id" name="category">
-                {% for category in categories %}
-                    <option value="{{ category.id }}">{{ category.category_name }}</option>
-                {% endfor %}
-            </select>
-            <select class="custom-select" id="type-of-operation-id" name="type_of_operation">
-                {% for expense_choice in expense_choices %}
-                    <option value="{{ expense_choice.0 }}">{{ expense_choice.0 }}</option>
-                {% endfor %}
-            </select>
-            <label for="amount-id">Amount</label>
-            <input type="text" class="form-control" id="amount-id" name="amount" placeholder="Amount"
-                   value="{{ transaction.amount }}">
-        </div>
-        <div class="form-group">
-            <label for="operation-date-id">Operation date</label>
-            <input type="date" class="form-control" id="operation-date-id" name="operation_date"
-                   value="{{ transaction.operation_date|date:'Y-m-d' }}">
-        </div>
-        <div class="form-group">
-            <label for="transaction-description-id">Transaction description</label>
-            <input type="text" class="form-control" id="transaction-description-id" name="transaction_description"
-                   placeholder="Transaction description"
-                   value="{{ transaction.transaction_description }}">
-        </div>
+        <div class="alignment">
+            <div class="form-group">
+                <label>Category name</label>
+                <select class="custom-select" id="categories-id" name="category">
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.category_name }}</option>
+                    {% endfor %}
+                </select>
+                <label>Type of operation</label>
+                <select class="custom-select" id="type-of-operation-id" name="type_of_operation">
+                    {% for expense_choice in expense_choices %}
+                        <option value="{{ expense_choice.0 }}">{{ expense_choice.0 }}</option>
+                    {% endfor %}
+                </select>
+                <label for="amount-id">Amount</label>
+                <input type="text" class="form-control" id="amount-id" name="amount" placeholder="Amount"
+                       value="{{ transaction.amount }}" required>
+            </div>
+            <div class="form-group">
+                <label for="operation-date-id">Operation date</label>
+                <input type="date" class="form-control" id="operation-date-id" name="operation_date"
+                       value="{{ transaction.operation_date|date:'Y-m-d' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="transaction-description-id">Transaction description</label>
+                <input type="text" class="form-control" id="transaction-description-id" name="transaction_description"
+                       placeholder="Transaction description"
+                       value="{{ transaction.transaction_description }}" required>
+            </div>
 
-        <button type="submit" id="submit-id" class="btn btn-success">Create transaction</button>
-        <button type="reset" id="reset-id" class="btn btn-warning">Reset</button>
+            <button type="submit" id="submit-id" class="btn btn-success">Create transaction</button>
+            <button type="reset" id="reset-id" class="btn btn-warning">Reset</button>
+        </div>
     </form>
 {% endblock %}

@@ -6,20 +6,22 @@
     {{ value|linebreaks }}
     <form method="post">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="category-name">Category name</label>
-            <input type="text" class="form-control" id="category-name" placeholder="Name of category"
-                   name="category_name"
-                   value="{{ category.category_name }}">
-        </div>
-        <div class="form-group">
-            <label for="category-description">Category description</label>
-            <input type="text" class="form-control" id="category-description" placeholder="Category description"
-                   name="category_description"
-                   value="{{ category.category_description }}">
-        </div>
+        <div class="alignment">
+            <div class="form-group">
+                <label for="category-name">Category name</label>
+                <input type="text" class="form-control" id="category-name" placeholder="Name of category"
+                       name="category_name"
+                       value="{{ category.category_name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="category-description">Category description</label>
+                <input type="text" class="form-control" id="category-description" placeholder="Category description"
+                       name="category_description"
+                       value="{{ category.category_description }}">
+            </div>
 
-        <button type="submit" id="submit-id" class="btn btn-success">Create category</button>
-        <button type="reset" id="reset-id" class="btn btn-warning">Reset</button>
+            <button type="submit" id="submit-id" class="btn btn-success">Create category</button>
+            <button type="reset" id="reset-id" class="btn btn-warning">Reset</button>
+        </div>
     </form>
 {% endblock %}

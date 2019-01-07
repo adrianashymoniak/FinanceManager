@@ -2,20 +2,24 @@
 {% block authorized_user_content %}
     <form method="post">
         {% csrf_token %}
-        <label>From</label>
-        <input class="form-control" id="operation-date-start-id" name="from" type="date" required>
-        <label>To</label>
-        <input class="form-control" id="operation-date-end-id" name="to" type="date" required>
-        <label>Type of operation</label>
-        <select class="custom-select" id="type-of-operation-id" name="type_of_operation">
-            {% for expense_choice in expense_choices %}
-                <option value="{{ expense_choice.0 }}">{{ expense_choice.0 }}</option>
-            {% endfor %}
-        </select>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="chart" value="category-pie" checked>Category Pie<br>
-            <input class="form-check-input" type="radio" name="chart" value="line-chart">Line Chart<br>
+        <div class="alignment">
+            <label>From</label>
+            <input class="form-control" id="operation-date-start-id" name="from" type="date" required>
+            <label>To</label>
+            <input class="form-control" id="operation-date-end-id" name="to" type="date" required>
+            <label>Type of operation</label>
+            <select class="custom-select" id="type-of-operation-id" name="type_of_operation">
+                {% for expense_choice in expense_choices %}
+                    <option value="{{ expense_choice.0 }}">{{ expense_choice.0 }}</option>
+                {% endfor %}
+            </select>
+            {{ value|linebreaks }}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="chart" value="category-pie" checked>Category Pie<br>
+                <input class="form-check-input" type="radio" name="chart" value="line-chart">Line Chart<br>
+            </div>
+            {{ value|linebreaks }}
+            <button class="btn btn-success" type="submit">Submit</button>
         </div>
-        <button class="btn btn-success" type="submit">Submit</button>
     </form>
 {% endblock %}

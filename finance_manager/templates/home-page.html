@@ -4,54 +4,56 @@
 {% endblock %}
 {% block authorized_user_content %}
     {{ value|linebreaks }}
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <label class="input-group-text" for="inputGroupSelect01">Options</label>
+    <div class="alignment">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="inputGroupSelect01">Options</label>
+            </div>
+            <select class="custom-select" id="inputGroupSelect01" name="categories">
+                <option>All categories</option>
+                {% for category in  categories %}
+                    <option value="{{ category.category_name }}"
+                            {% if  category.id == category_id %}
+                            selected="selected"{% endif %}>{{ category.category_name }}</option>
+                {% endfor %}
+            </select>
         </div>
-        <select class="custom-select" id="inputGroupSelect01" name="categories">
-            <option>All categories</option>
-            {% for category in  categories %}
-                <option value="{{ category.category_name }}"
-                        {% if  category.id == category_id %}
-                        selected="selected"{% endif %}>{{ category.category_name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    {{ value|linebreaks }}
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Category</th>
-                <th>Type of operation</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody id="myTable">
-            {% for transaction in transactions %}
+        {{ value|linebreaks }}
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
                 <tr>
-                    <td>{{ transaction.id }}</td>
-                    <td>{{ transaction.category.category_name }}</td>
-                    <td>{{ transaction.type_of_operation }}</td>
-                    <td>{{ transaction.amount }}</td>
-                    <td>{{ transaction.operation_date }}</td>
-                    <td>{{ transaction.transaction_description }}</td>
-                    <td>
-                        <a id="edit-transaction" class="btn btn-info"
-                           href="{% url 'edit-transaction-page' pk=transaction.id %}">Edit
-                            transaction</a>
-                        <a id="delete-transaction" class="btn btn-danger"
-                           href="{% url 'delete-transaction' pk=transaction.pk %}">Delete
-                            transaction</a>
-                    </td>
+                    <th>#</th>
+                    <th>Category</th>
+                    <th>Type of operation</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Action</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="myTable">
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.id }}</td>
+                        <td>{{ transaction.category.category_name }}</td>
+                        <td>{{ transaction.type_of_operation }}</td>
+                        <td>{{ transaction.amount }}</td>
+                        <td>{{ transaction.operation_date }}</td>
+                        <td>{{ transaction.transaction_description }}</td>
+                        <td>
+                            <a id="edit-transaction" class="btn btn-info"
+                               href="{% url 'edit-transaction-page' pk=transaction.id %}">Edit
+                                transaction</a>
+                            <a id="delete-transaction" class="btn btn-danger"
+                               href="{% url 'delete-transaction' pk=transaction.pk %}">Delete
+                                transaction</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
     <script>
         $(document).ready(function () {

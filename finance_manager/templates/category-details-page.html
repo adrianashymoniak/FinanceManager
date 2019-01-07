@@ -1,44 +1,49 @@
 {% extends 'base.html' %}
 {% block title %}
-   You are on "{{ category.category_name }}" category
+    You are on "{{ category.category_name }}" category
 {% endblock %}
-{% block authorized_user_content  %}
-    <span> Name: {{ category.category_name }}</span>
-    <p>Description: {{ category.category_description }}</p>
-    <a id="delete-all-transactions-of-one-category-id"
-       href="{% url 'delete-all-transaction-of-one-category' pk=category.pk %}">Delete all transactions related to
-        "{{ category.category_name }}" category</a>
-    {{ vanue|linebreaks }}
+{% block authorized_user_content %}
+    <div class="alignment">
+        <span> Name: {{ category.category_name }}</span>
+        {% if  category_description  != None %}
+            <p>Description: {{ category.category_description }}</p>
+        {% endif %}
+        {{ value|linebreaks }}
+        <a id="delete-all-transactions-of-one-category-id"
+           href="{% url 'delete-all-transaction-of-one-category' pk=category.pk %}">Delete all transactions related to
+            "{{ category.category_name }}" category</a>
+        {{ vanue|linebreaks }}
 
-    <div class="table-responsive">
-        <table class="table table-sm">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Type of operation</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Description</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody id="myTable">
-            {% for transaction in transactions %}
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
                 <tr>
-                    <td>{{ transaction.id }}</td>
-                    <td>{{ transaction.type_of_operation }}</td>
-                    <td>{{ transaction.amount }}</td>
-                    <td>{{ transaction.operation_date }}</td>
-                    <td>{{ transaction.transaction_description }}</td>
-                    <td>
-                        <a href="{% url 'delete-transaction' pk=transaction.pk %}" class="btn btn-danger">Delete
-                            transaction</a>
-                    </td>
+                    <th>#</th>
+                    <th>Type of operation</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Action</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody id="myTable">
+                {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.id }}</td>
+                        <td>{{ transaction.type_of_operation }}</td>
+                        <td>{{ transaction.amount }}</td>
+                        <td>{{ transaction.operation_date }}</td>
+                        <td>{{ transaction.transaction_description }}</td>
+                        <td>
+                            <a href="{% url 'delete-transaction' pk=transaction.pk %}" class="btn btn-danger">Delete
+                                transaction</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <a id="delete-category-id"
+           href="{% url 'delete-category' pk=category.pk %}" class="btn btn-danger">Delete category</a>
     </div>
-    <a id="delete-category-id"
-       href="{% url 'delete-category' pk=category.pk %}" class="btn btn-danger">Delete category</a>
 {% endblock %}

@@ -4,38 +4,40 @@
 {% endblock %}
 {% block authorized_user_content %}
     {{ value|linebreaks }}
-    <input class="form-control mr-sm-2" id="search-id" type="text" placeholder="Search..">
-    {{ value|linebreaks }}
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Action</th>
-            </tr>
-            </thead>
-            <tbody id="table-id">
-            {% for category in categories %}
+    <div class="alignment">
+        <input class="form-control mr-sm-2" id="search-id" type="text" placeholder="Search..">
+        {{ value|linebreaks }}
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
                 <tr>
-                    <td>{{ category.id }}</td>
-                    <td><a href="{% url 'category-details' pk=category.pk %}">{{ category.category_name }}</a></td>
-                    <td>{{ category.category_description }}</td>
-                    <td>
-                        <a id="edit-category" class="btn btn-info" href="{% url 'edit-category-page' pk=category.id %}">Edit
-                            category</a>
-                        <a id="delete-category" class="btn btn-danger"
-                           href="{% url 'delete-category' pk=category.id %}">Delete
-                            category</a>
-                    </td>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Action</th>
                 </tr>
-            {% endfor %}
+                </thead>
+                <tbody id="table-id">
+                {% for category in categories %}
+                    <tr>
+                        <td>{{ category.id }}</td>
+                        <td><a href="{% url 'category-details' pk=category.pk %}">{{ category.category_name }}</a></td>
+                        <td>{{ category.category_description }}</td>
+                        <td>
+                            <a id="edit-category" class="btn btn-info"
+                               href="{% url 'edit-category-page' pk=category.id %}">Edit
+                                category</a>
+                            <a id="delete-category" class="btn btn-danger"
+                               href="{% url 'delete-category' pk=category.id %}">Delete
+                                category</a>
+                        </td>
+                    </tr>
+                {% endfor %}
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
-
     <script>
         $(document).ready(function () {
             {% if messages %}
