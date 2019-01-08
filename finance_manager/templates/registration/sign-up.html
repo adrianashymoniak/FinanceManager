@@ -21,6 +21,25 @@
                    required>
             {{ value|linebreaks }}
             <button class="btn btn-primary" id="signup-btn" type="submit">Sign Up</button>
+            {{ value|linebreaks }}
         </form>
+        <div class="error-message">
+            {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            <a href="#" class="close" data-dismiss="alert">&times;</a>
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <a href="#" class="close" data-dismiss="alert">&times;</a>
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
     </div>
 {% endblock %}

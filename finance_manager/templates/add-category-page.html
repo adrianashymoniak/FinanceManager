@@ -3,7 +3,6 @@
     Add new category
 {% endblock %}
 {% block authorized_user_content %}
-    {{ value|linebreaks }}
     <form method="post">
         {% csrf_token %}
         <div class="alignment">

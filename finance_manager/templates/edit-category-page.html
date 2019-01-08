@@ -6,20 +6,15 @@
     <form method="post">
         {% csrf_token %}
         <div class="alignment">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
-                </div>
-                <input type="text" class="form-control" aria-label="Default"
-                       aria-describedby="inputGroup-sizing-default"
-                       name="category_name" value="{{ category.category_name }}" required>
+              <div class="form-group">
+                <label for="category-name">Category name</label>
+                <input type="text" class="form-control" id="category-name" placeholder="Name of category"
+                       name="category_name"
+                       value="{{ category.category_name }}" required>
             </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-default">Description</span>
-                </div>
-                <input type="text" class="form-control" aria-label="Default"
-                       aria-describedby="inputGroup-sizing-default"
+            <div class="form-group">
+                <label for="category-description">Category description</label>
+                <input type="text" class="form-control" id="category-description" placeholder="Category description"
                        name="category_description"
                        value="{{ category.category_description }}">
             </div>
