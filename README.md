@@ -13,5 +13,6 @@
 * run: **pip install -r requirements.txt** (for installing required libraries in your virtual env)
 * Make sure your virtual environment is activated and requirements are installed    
 * Run migration: **python manage.py migrate --settings=finance_manager_app.settings.base_settings**
+* Run migration: **python manage.py createsuperuser --settings=finance_manager_app.settings.base_settings**
 * Run server locally: **python manage.py runserver --settings=finance_manager_app.settings.base_settings**
 * Open browser and go to  **http://127.0.0.1:8000/**
